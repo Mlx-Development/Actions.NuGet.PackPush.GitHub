@@ -14,10 +14,6 @@ inputs:
   csprojPath:
     required: true
     type: stringy
-  dotNetVersion:
-    required: true
-    type: string
-    default: '8.x'
   ghPAT:
     required: true
     type: string
@@ -25,7 +21,7 @@ inputs:
 runs:
   using: "composite"
   steps:    
-        
+
     - name: Pack Stable
       if: ${{ !inputs.isRcBuild }}
       shell: bash
