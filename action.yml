@@ -33,26 +33,16 @@ runs:
   steps:    
 
     - name: Pack Stable
+      if: ${{ isRcBuild == "false" }}
       shell: bash
-      run: |
-        if [[ ${{ !inputs.isRcBuild }} ]]; then
-          dotnet pack ${{ inputs.context }}/${{ inputs.csprojPath }} -c Release -p:PackageVersion=${{ inputs.version }}
-        fi
-        exit 0
-        
+      run: dotnet pack ${{ inputs.context }}/${{ inputs.csprojPath }} -c Release -p:PackageVersion=${{ inputs.version }}
       
     - name: Pack RC
+      if: ${{ isRcBuild == "true" }}
       shell: bash
-      run: |
-        if [[ ${{ inputs.isRcBuild }} ]]; then
-          dotnet pack ${{ inputs.context }}/${{ inputs.csprojPath }} -c Release -p:PackageVersion=${{ inputs.version }}-rc
-        fi 
-        exit 0
+      run: dotnet pack ${{ inputs.context }}/${{ inputs.csprojPath }} -c Release -p:PackageVersion=${{ inputs.version }}-rc
 
-    - name: Publish to GitHub packages
+    - name: Publish to GitHub packages    
+      if: ${{ pushBuild != "false" }}
       shell: bash
-      run: |
-        if [[ ${{ !inputs.isRcBuild }} ]]; then
-          dotnet nuget push ${{ inputs.context }}/**/*.nupkg --api-key ${{ inputs.ghPAT }} --source "${{ inputs.packageSourceId }}"
-        fi
-        exit 0
+      run: dotnet nuget push ${{ inputs.context }}/**/*.nupkg --api-key ${{ inputs.ghPAT }} --source "${{ inputs.packageSourceId }}"
