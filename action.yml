@@ -2,8 +2,9 @@ name: NuGet Build & Push to GitHub
 
 inputs:
   pushBuild:
-    required: true
+    required: false
     type: boolean
+    default: false
   version:
     required: true
     type: string
@@ -15,14 +16,15 @@ inputs:
     required: true
     type: string
   context:
-    required: true
+    required: false
     type: string
     default: "."
   ghPAT:
-    required: true
+    required: false
     type: string
+    default: ""
   packageSourceId:
-    requried: true
+    required: false
     type: string
     defualt: "github"
     
