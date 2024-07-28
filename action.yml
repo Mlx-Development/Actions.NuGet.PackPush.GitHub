@@ -21,6 +21,10 @@ inputs:
   ghPAT:
     required: true
     type: string
+  packageSourceId:
+    requried: true
+    type: string
+    defualt: ""
     
 runs:
   using: "composite"
@@ -39,9 +43,9 @@ runs:
     - name: Prep packages
       if: ${{ inputs.pushBuild }}
       shell: bash
-      run: dotnet nuget add source --username thenightangel17 --password ${{ inputs.ghPAT }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/mlx-development/index.json"
+      run: dotnet nuget add source --username thenightangel17 --password ${{ inputs.ghPAT }} --store-password-in-clear-text --name github${{ inputs.packageSourceId }} "https://nuget.pkg.github.com/mlx-development/index.json"
       
     - name: Publish to GitHub packages
       if: ${{ inputs.pushBuild }}
       shell: bash
-      run: dotnet nuget push ${{ inputs.context }}/**/*.nupkg --api-key ${{ inputs.ghPAT }} --source "github"
+      run: dotnet nuget push ${{ inputs.context }}/**/*.nupkg --api-key ${{ inputs.ghPAT }} --source "github${{ inputs.packageSourceId }}"
