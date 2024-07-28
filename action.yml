@@ -24,7 +24,7 @@ inputs:
   packageSourceId:
     requried: true
     type: string
-    defualt: ""
+    defualt: "github"
     
 runs:
   using: "composite"
